@@ -1,7 +1,13 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, Dimensions, ViewPropTypes } from 'react-native';
+import React, { Component } from 'react';
+
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  ViewPropTypes,
+} from 'react-native';
 
 // if ViewPropTypes is not defined fall back to View.propType (to support RN < 0.44)
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -212,11 +218,19 @@ export default class ConfirmationCodeInput extends Component {
   _onInputCode(character, index) {
     const { codeLength, onFulfill, compareWithCode, ignoreCase, onCodeChange } = this.props;
     let newCodeArr = _.clone(this.state.codeArr);
-    newCodeArr[index] = character;
-    
+    if (character.length == codeLength) {
+      for (var i = 0; i < codeLength; i++) {
+        newCodeArr[i] = character[i];
+      }
+      index = codeLength - 1
+    }
+    else {
+      newCodeArr[index] = character;
+    }
+
     if (index == codeLength - 1) {
       const code = newCodeArr.join('');
-      
+
       if (compareWithCode) {
         const isMatching = this._isMatchingCode(code, compareWithCode, ignoreCase);
         onFulfill(isMatching, code);
@@ -228,7 +242,7 @@ export default class ConfirmationCodeInput extends Component {
     } else {
       this._setFocus(this.state.currentIndex + 1);
     }
-    
+
     this.setState(prevState => {
       return {
         codeArr: newCodeArr,
