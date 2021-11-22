@@ -225,7 +225,7 @@ export default class ConfirmationCodeInput extends Component {
       index = codeLength - 1
     }
     else {
-      newCodeArr[index] = character;
+      newCodeArr[index] = character.length > 0 ? character[0] : character;
     }
 
     if (index == codeLength - 1) {
@@ -291,7 +291,7 @@ export default class ConfirmationCodeInput extends Component {
           value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
           onChangeText={text => this._onInputCode(text, id)}
           onKeyPress={(e) => this._onKeyPress(e)}
-          maxLength={1}
+          maxLength={codeLength}
         />
       )
     }
