@@ -240,13 +240,13 @@ export default class ConfirmationCodeInput extends Component {
       }
       this._blur(this.state.currentIndex);
     } else {
-      this._setFocus(this.state.currentIndex + 1);
+      this._setFocus((this.state.currentIndex + 1) % codeLength);
     }
 
     this.setState(prevState => {
       return {
         codeArr: newCodeArr,
-        currentIndex: prevState.currentIndex + 1
+        currentIndex: (prevState.currentIndex + 1) % codeLength
       };
     }, () => { onCodeChange(newCodeArr.join('')) });
   }
